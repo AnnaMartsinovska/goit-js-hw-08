@@ -1,7 +1,9 @@
 import throttle from "lodash.throttle";
 
 const refs = {
-    formEl: document.querySelector('.feedback-form')
+    formEl: document.querySelector('.feedback-form'),
+    emailInput: document.querySelector('input[name="email"]'),
+    messageInput: document.querySelector('textarea[name="message"]')
 };
 
 const localStorageKey = "feedback-form-state";
@@ -48,8 +50,8 @@ function loadFromLS(key) {
 
 function onLoadPage() { 
     data = loadFromLS(localStorageKey) || {};
-    refs.formEl.value = data.email || "";
-    refs.formEl.value = data.message || "";
+    refs.emailInput.value = data.email || "";
+    refs.messageInput.value = data.message || "";
 };
 
 onLoadPage();
