@@ -1,21 +1,22 @@
 import throttle from "lodash.throttle";
 
 const refs = {
-    inputEmailEl: document.querySelector('input'),
-    inputMessageEl: document.querySelector('textarea'),
     formEl: document.querySelector('.feedback-form')
 };
 
 const localStorageKey = "feedback-form-state";
 let data = {};
 
-refs.inputEmailEl.addEventListener('input', onDataInput);
-refs.inputMessageEl.addEventListener('input', onDataInput);
-refs.formEl.addEventListener('submit', throttle(saveForm, 500));
+refs.formEl.addEventListener('input', throttle(onDataInput, 500));
+refs.formEl.addEventListener('submit', saveForm);
 
 
 function saveForm(e){ 
     e.preventDefault();
+
+    const { email, message } = e.target.elements;
+    if (email.value === "" || message.value === "") {return alert('Заповніть пусті поля') };
+
     console.log(data);
     e.target.reset();
     localStorage.removeItem(localStorageKey);
@@ -47,9 +48,8 @@ function loadFromLS(key) {
 
 function onLoadPage() { 
     data = loadFromLS(localStorageKey) || {};
-    console.log(data);
-    refs.inputEmailEl.value = data.email || "";
-    refs.inputMessageEl.value = data.message || "";
+    refs.formEl.value = data.email || "";
+    refs.formEl.value = data.message || "";
 };
 
 onLoadPage();
